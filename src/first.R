@@ -55,11 +55,11 @@ print(summary(weight_model3))
 # predict weight at age = 10
 print("predict weight at age = 10")
 print("confidence:")
-print(predict(weight_model, newdata = data.frame(AGE ~ 10),
+print(predict(weight_model, newdata = data.frame(AGE = 10),
               interval = "confidence"))
 
 print("prediction:")
-print(predict(weight_model, newdata = data.frame(AGE ~ 10),
+print(predict(weight_model, newdata = data.frame(AGE = 10),
               interval = "prediction", level = 0.90))
 
 # confidence intervals
