@@ -22,17 +22,21 @@ correl_heart <- cor.test(age, serum_creatinine)
 print(correl_heart$conf.int)
 
 # part G
-qqnorm(residuals(heart_model), main = "Q-Q Plot")
-qqline(residuals(heart_model), col = "red")
+par(mfrow = c(2, 2))
+plot(heart_model)
 
-# part H
+# part H/I
 model_log <- lm(log(serum_creatinine) ~ age, data = df)
 model_sqrt <- lm(sqrt(serum_creatinine) ~ age, data = df)
+
+print("log transformation:")
 print(summary(model_log))
+
+print("sqrt transformation:")
 print(summary(model_sqrt))
 
-# par(mfrow = c(2, 2))
-# plot(model_log)
+par(mfrow = c(2, 2))
+plot(model_log)
 
 par(mfrow = c(2, 2))
 plot(model_sqrt)
