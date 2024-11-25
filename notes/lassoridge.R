@@ -92,3 +92,33 @@ print(mse(train_set$medv, pred_ridge_train))
 pred_ridge_test <- predict(out2, newx = x_test, s = bestlam2)
 print(mse(test_set$medv, pred_ridge_test))
 
+# scale dataset
+x_scaled <- scale(train_set[, -whihc(names(df) == "medv")])
+
+# excluding response
+x_scaled <- x_scaled[, -c(14)]
+x_scaled <- as.matrix(x_scaled)
+grid <- 10^seq(10, -2, length = 100)
+
+set.seed(123)
+
+# find optimal penalty value, alpha = 1 lasso, alpha = 0 for ridge
+cv_out <- cv.glmnet(x_scaled, train_set$medv, alpha = 1)
+plot(cv_out)
+bestlam3 <- cv_out$lambda.min
+print(bestlam3)
+
+# use optimized lambda value in lasso
+out <- glmnet(x_scaled, train_set$medv, alpha = 1, lambda = grid)
+lasso_coef <- predict(out, type = "coefficients", s = bestlam3)
+print(lasso_coef)
+
+# training mse
+pred_lasso <- predict(out, newx = x_scaled, s = bestlam3)
+print(mse(train_set$medv, pred_lasso))
+
+# testing mse
+x_scaled_test <- scale(test_set[, -which(names(df) == "medv")])
+x_scaled_test <- as.matrix(x_scaled_test[, -c(14)])
+pred_lasso_test1 <- predict(out, newx = x_scaled_test, s = bestlam3)
+print(mse(test_set$medv, pred_lasso_test1))
